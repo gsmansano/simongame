@@ -13,6 +13,7 @@ var started = false;
 $(document).keydown(function() {
   if (!started) {
     $("#level-title").text("Level " + level);
+    userClickPattern = [];
     nextSequence();
     started = true;
   }
@@ -38,8 +39,42 @@ $(".btn").click(function() {
   var userChosenColor = $(this).attr("id");
   playSound(userChosenColor);
   animatePress(userChosenColor);
-  userClickPattern.push(userChosenColor);
+  // if (started === true) {
+  //   checkAnswer();
+  // }
 });
+
+// Check Answer function
+
+function checkAnswer() {
+  var answer === true;
+
+  for (i = 0; answer === true && level === i; i++) {
+
+    var checkedGamecolor = gamePattern["i"];
+    var checkedClickedcolor = userClickPattern["i"];
+
+    if (checkedClickedcolor = checkedGamecolor) {
+      answer === true;
+    } else {
+      answer === false;
+    }
+  }
+
+  if (answer === true) {
+    setTimeout(nextSequence(), 1000)
+    userClickPattern = [];
+  } else {
+    setTimeout(function() {
+      $("body").addClass("game-over");
+      $("#level-title").text("You got it wrong! Press refresh to restart.");
+      let wrongSound = new Audio("sounds/wrong.mp3");
+      wrongSound.play();
+    }, 100)
+
+  }
+
+}
 
 // Flash animation function
 
