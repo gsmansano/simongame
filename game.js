@@ -9,7 +9,6 @@ var userClickPattern = [];
 
 var level = 0;
 var started = false;
-
 $(document).keydown(function() {
   if (!started) {
     $("#level-title").text("Level " + level);
@@ -39,41 +38,57 @@ $(".btn").click(function() {
   var userChosenColor = $(this).attr("id");
   playSound(userChosenColor);
   animatePress(userChosenColor);
-  // if (started === true) {
-  //   checkAnswer();
-  // }
+  if (started == true) {
+    userClickPattern.push(userChosenColor);
+    checkAnswer();
+  }
 });
+
+// Checking variables
+
+var checkedAnswerlevel = 1;
+var checkedAnswer = 0;
 
 // Check Answer function
 
 function checkAnswer() {
-  var answer === true;
 
-  for (i = 0; answer === true && level === i; i++) {
+  // Check answer variables
+  var answer = true;
+  var checkedGamecolor = gamePattern[checkedAnswer];
+  var checkedClickedcolor = userClickPattern[checkedAnswer];
 
-    var checkedGamecolor = gamePattern["i"];
-    var checkedClickedcolor = userClickPattern["i"];
-
-    if (checkedClickedcolor = checkedGamecolor) {
-      answer === true;
+  if (checkedClickedcolor === checkedGamecolor) {
+    answer = true;
+    if (level > checkedAnswerlevel) {
+      checkedAnswerlevel++;
+      checkedAnswer++;
     } else {
-      answer === false;
+      setTimeout(nextSequence, 1000);
+      userClickPattern = [];
+      checkedAnswerlevel = 1;
+      checkedAnswer = 0;
     }
-  }
-
-  if (answer === true) {
-    setTimeout(nextSequence(), 1000)
-    userClickPattern = [];
   } else {
-    setTimeout(function() {
-      $("body").addClass("game-over");
-      $("#level-title").text("You got it wrong! Press refresh to restart.");
-      let wrongSound = new Audio("sounds/wrong.mp3");
-      wrongSound.play();
-    }, 100)
-
+    answer = false;
+    $("#level-title").text("You got it wrong! Press any key to restart.");
+    $("body").addClass("game-over");
+    setTimeout(function(){
+    $("body").removeClass("game-over");
+    }, 200)
+    let wrongSound = new Audio("sounds/wrong.mp3");
+    wrongSound.play();
+    startOver();
   }
 
+}
+
+// Wrong answer restart function.
+
+function startOver () {
+  started = false;
+  level = 0;
+  gamePattern = [];
 }
 
 // Flash animation function
